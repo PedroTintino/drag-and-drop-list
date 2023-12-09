@@ -1,11 +1,19 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { TaskInterface } from "./Interfaces";
 import ToDoTask from "./components/ToDoTask";
 
 function App(){
 
   const [task, setTask] = useState<string>("");
-  const [todo, setTodo] = useState<TaskInterface[]>([]);
+  const [todo, setTodo] = useState<TaskInterface[]>(() => {
+    const storedTodo = localStorage.getItem('todo');
+    return storedTodo ? JSON.parse(storedTodo) : []
+  });
+
+  useEffect(() => {
+    localStorage.setItem('todo', JSON.stringify(todo));
+  }, [todo]);
+
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault;
