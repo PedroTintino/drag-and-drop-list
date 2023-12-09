@@ -1,4 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
+import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { TaskInterface } from "./Interfaces";
 import ToDoTask from "./components/ToDoTask";
 
@@ -24,7 +25,7 @@ function App(){
 
   const createTask = () => {
     const newTask = {
-      id: new Date().getTime(),
+      id: String(new Date().getTime()),
       taskName: task
     }
     if(!task){
@@ -38,6 +39,25 @@ function App(){
     setTodo(todo.filter((task) =>{
       return task.taskName != taskNameToDelete
     }))
+  }
+
+  function reorder<T>(list: T[], startIndex: number, endIndex: number){
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1)
+    result.splice(endIndex, 0 , removed)
+
+    return result;
+  }
+
+  function onDragEnd(result: any){
+    if(!result.destination){
+      return;
+    }
+
+    const items = reorder(todo, result.source.index, result.destination.index)
+
+    setTodo(items)
+    
   }
 
   return(
@@ -59,9 +79,18 @@ function App(){
           </button>
         </form>
           <section className="bg-white rounded p-2">
-            {todo.map((task:TaskInterface, key:number) => (
-              <ToDoTask key={key} task={task} completeTask={completeTask} />
-            ))}
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="tasks" type="list" direction="vertical">
+                {(provided) => (
+                        <article ref={provided.innerRef} {...provided.droppableProps}>
+                          {todo.map((task:TaskInterface, index) => (
+                            <ToDoTask key={task.id} task={task} completeTask={completeTask} index={index} />
+                          ))}
+                          {provided.placeholder}
+                        </article>
+                )}
+              </Droppable>
+            </DragDropContext>
           </section>
       </main>
     </div>

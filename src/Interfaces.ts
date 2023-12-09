@@ -1,8 +1,11 @@
 export interface TaskInterface{
-    id: number,
+    id: string ,
     taskName: string
 }
 
-export interface completeTask{
-    completeTask(taskNameToDelete: string): void
+export interface CompleteTask{
+    task: TaskInterface,
+    completeTask(taskNameToDelete: string): void,
+    index: number
+
 }
