@@ -1,4 +1,5 @@
 export interface TaskInterface{
+    id: number,
     taskName: string
 }
 

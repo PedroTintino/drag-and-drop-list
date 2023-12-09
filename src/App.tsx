@@ -24,6 +24,7 @@ function App(){
 
   const createTask = () => {
     const newTask = {
+      id: new Date().getTime(),
       taskName: task
     }
     if(!task){
@@ -50,16 +51,18 @@ function App(){
           name="task" value={task} onChange={handleChange}/>
           <button 
           className="
-          text-white bg-green-600 rounded p-2 font-medium 
-          hover:bg-green-800 duration-100  mb-2" 
+          text-white bg-purple-600 rounded p-2 font-medium 
+          hover:bg-purple-800 duration-100  mb-2" 
           type="button"
           onClick={createTask}>
             Create
           </button>
         </form>
+          <section className="bg-white rounded p-2">
             {todo.map((task:TaskInterface, key:number) => (
               <ToDoTask key={key} task={task} completeTask={completeTask} />
             ))}
+          </section>
       </main>
     </div>
   )

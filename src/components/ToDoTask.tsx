@@ -9,8 +9,8 @@ export interface CompleteTask{
 function ToDoTask({task, completeTask}:CompleteTask){
     return(
         <article 
-        className="bg-gray-100 w-full rounded p-2 mt-2">
-          <p><span className="font-medium">{task.taskName}</span><button 
+        className="bg-gray-200 w-full rounded p-2 mt-2 hover:scale-105 duration-150 cursor-pointer">
+          <p><span className="font-medium">{task.id}{task.taskName}</span><button 
           className="float-right"
           onClick={() => {
             completeTask(task.taskName)
